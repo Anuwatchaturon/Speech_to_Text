@@ -1,32 +1,27 @@
-import threading
 import time
 import speech_recognition as sr
-language = ['af','sq','am','ar','hy','az','eu','be','bn','bs',
-            'bg','ca','ceb','ny','zh-cn','zh-tw','co','hr','cs','da',
-            'nl','en','eo','et','tl','fi','fr','fy','gl','ka',
-            'de','el','gu','ht','ha','haw','iw','hi','hmn','hu',
-            'is','ig','id','ga','it','ja','jw','kn','kk','km',
-            'ku','ky','lo','la','lv','lt','lb','mk','mg','ms'
-            'ml','mt','mi','mr','mn','my','ne','no','ps','fa',
-            'pl','pt','pa','ro','ru','gd','sr','st','sn','sd',
-            'si','sk','sl','so','sm','es','su','sw','sv','tg',
-            'ta','te','th','tr','uk','ur','uz','vi','cy','xh',
+start_time = time.time()
+
+language = ['af','sq','am','ar','hy','az','eu','be','bn','bs','bg','ca','ceb','ny','zh-cn','zh-tw','co','hr','cs','da',
+            'nl','en','eo','et','tl','fi','fr','fy','gl','ka','de','el','gu','ht','ha','haw','iw','hi','hmn','hu',
+            'is','ig','id','ga','it','ja','jw','kn','kk','km','ku','ky','lo','la','lv','lt','lb','mk','mg','ms'
+            'ml','mt','mi','mr','mn','my','ne','no','ps','fa','pl','pt','pa','ro','ru','gd','sr','st','sn','sd',
+            'si','sk','sl','so','sm','es','su','sw','sv','tg','ta','te','th','tr','uk','ur','uz','vi','cy','xh',
             'yi','yo','zu','fil','he''ko',]
 lanchoose = []
 textlist = []
 tranlist = []
-xx=[]
 
-def msg():
-    while t !=0:
+seconds = 30
+def timecheck():
+    while True:
         main()
-        print ("time's up")
-        time.sleep(1)#just enough to show the above msg
-        print(textlist)
-    exit()
-t=threading.Timer(5.0,msg)
-t.start()
-
+        current_time = time.time()
+        elapsed_time = current_time - start_time
+        if elapsed_time > seconds:
+            print("Time out")
+            print(textlist)
+            break
 
 
 def main():
@@ -57,3 +52,5 @@ def main():
 
         else:
             print('No language')
+
+timecheck()

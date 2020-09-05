@@ -1,10 +1,4 @@
-from pynput import keyboard
 import speech_recognition as sr
-from googletrans import Translator
-
-import time
-import keyboard
-
 language = ['af','sq','am','ar','hy','az','eu','be','bn','bs',
             'bg','ca','ceb','ny','zh-cn','zh-tw','co','hr','cs','da',
             'nl','en','eo','et','tl','fi','fr','fy','gl','ka',
@@ -16,8 +10,10 @@ language = ['af','sq','am','ar','hy','az','eu','be','bn','bs',
             'si','sk','sl','so','sm','es','su','sw','sv','tg',
             'ta','te','th','tr','uk','ur','uz','vi','cy','xh',
             'yi','yo','zu','fil','he''ko',]
+lanchoose = []
+textlist = []
 
-def main():
+def speech_to_text():
     #while True:
         lan = str(input('choose language '))
         lanchoose.append(lan)
@@ -46,37 +42,4 @@ def main():
         else:
             print('No language')
 
-
-def translate():
-    src = lanchoose[0]
-    dest = str(input('traget language '))
-    translator = Translator()
-    word = textlist[0]
-    result = translator.translate(word, src= src, dest=dest)
-
-    print(result.src)  # The source language
-    print(result.origin)  # Original text, that is 'Mitä sinä teet' in our example
-    print(result.dest)  # Destination language, which is set to English (en)
-    print(result.text)  # Translated text, that will be 'what are you doing?' in our case
-
-    tranlist.append(result)
-
-def Timer():
-    print("10 second")
-    for i in range (10):
-        print(10-i, end=' ')
-        time.sleep(1)
-    print()
-
-lanchoose = []
-textlist = []
-tranlist = []
-
 main()
-#translate()
-#Timer()
-#print('ภาษาที่เลือก')
-#print(lanchoose)
-#print('คำแปล จาก translate')
-#print(tranlist)
-

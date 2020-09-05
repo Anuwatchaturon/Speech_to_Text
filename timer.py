@@ -1,13 +1,13 @@
-import threading
 import time
-xx=[]
-def msg():
-    while t !=0:
-        x = input()
-        xx.append(x)
-        print ("time's up")
-        time.sleep(1)#just enough to show the above msg
-        print(xx)
-    exit()
-t=threading.Timer(3.0,msg)
-t.start()
+seconds = 30
+def timecheck():
+    while True:
+        main()
+        current_time = time.time()
+        elapsed_time = current_time - start_time
+        if elapsed_time > seconds:
+            print("Time out")
+            print(textlist)
+            break
+
+timecheck()
