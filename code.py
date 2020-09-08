@@ -13,7 +13,7 @@ textlist = []
 tranlist = []
 
 start_time = time.time()
-seconds = 10
+seconds = 30
 
 lan = str(input('choose language '))
 lanchoose.append(lan)
@@ -58,6 +58,7 @@ def speech_to_text():
 
         else:
             print('No language')
+            exit()
 
 def translate():
     src = lanchoose[0]
