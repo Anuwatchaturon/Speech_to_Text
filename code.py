@@ -58,7 +58,7 @@ def speech_to_text():
 
         else:
             print('No language')
-            exit()
+
 
 def translate():
     src = lanchoose[0]
@@ -79,7 +79,9 @@ def checktranslate():
     a = input('')
     if a == "Y" or "y":
         translate()
-    else:
+    elif a == "N" or "n":
          exit()
+    else:
+        exit()
 
 main()

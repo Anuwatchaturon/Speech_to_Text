@@ -1,27 +1,28 @@
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.dropdown import DropDown
+from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
+from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.button import MDRectangleFlatButton
 from kivymd.uix.button import MDRoundFlatButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.textfield import MDTextField
 from kivy.core.window import Window
 import speech_recognition as sr
+from kivy.uix.dropdown import DropDown
+from kivy.uix.label import Label
+
 from kivymd.uix.menu import MDDropdownMenu
 from googletrans import Translator
 
 # -*- coding: utf-8 -*-
 
 Window.size = (330, 560)
-r = sr.Recognizer()
-language = ['af','sq','am','ar','hy','az','eu','be','bn','bs','bg','ca','ceb','ny','zh-cn','zh-tw','co','hr','cs','da',
-            'nl','en','eo','et','tl','fi','fr','fy','gl','ka','de','el','gu','ht','ha','haw','iw','hi','hmn','hu',
-            'is','ig','id','ga','it','ja','jw','kn','kk','km','ku','ky','lo','la','lv','lt','lb','mk','mg','ms'
-            'ml','mt','mi','mr','mn','my','ne','no','ps','fa','pl','pt','pa','ro','ru','gd','sr','st','sn','sd',
-            'si','sk','sl','so','sm','es','su','sw','sv','tg','ta','te','th','tr','uk','ur','uz','vi','cy','xh',
-            'yi','yo','zu','fil','he''ko',]
 
+language = ['th']
+font = ['FC Motorway Regular.otf']
 lanchoose = []
 textlist = []
 tranlist = []
@@ -34,29 +35,22 @@ MDLabel:
         pos_hint:{'center_x': 0.27, 'center_y': 0.93}
         font_style :'Subtitle1'
         font_size : 23
-        
+
 """
-btnrec= """
+btnrec = """
 MDRectangleFlatButton:
         id : btnrec
         text: 'Record'
-        pos_hint: {'center_x':0.3,'center_y':0.1}
-        on_press: app.rec()
+        pos_hint: {'center_x':0.5,'center_y':0.2}
+        on_release: app.checklan()
+        readonly: True
 
 """
-btntran= """
+btntran = """
 MDRectangleFlatButton:
         id : btntran
         text: 'Translate'
         pos_hint: {'center_x':0.7,'center_y':0.1}
-        on_press: 
-
-"""
-btnlan= """
-MDFillRoundFlatButton:
-        id : btnlan
-        text: 'Language'
-        pos_hint: {'center_x':0.8,'center_y':0.93}
         on_press: 
 
 """
@@ -71,15 +65,14 @@ MDLabel:
         font_style :'Subtitle2'
 """
 youtext = """
-MDLabel:
+Label:
         id: youtext
         text: ''
         halign: 'center'
-        pos_hint:{'center_x': 0.5, 'center_y': 0.8}
+        pos_hint:{'center_x': 0.5, 'center_y': 0.75}
         font_style :'Subtitle2'
-        
-"""
 
+"""
 trantext = """
 MDLabel:
         id: trantext
@@ -99,13 +92,23 @@ MDLabel:
         font_style :'Subtitle2'
 
 """
+btnclear = """
+MDRectangleFlatButton:
+        id : btnclear
+        text: 'Clear'
+        pos_hint: {'center_x':0.3,'center_y':0.1}
+        on_release: app.clear()
+        readonly: True
+
+"""
+
+
 class MainApp(MDApp):
 
     def build(self):
         screen = Screen()
-        self.theme_cls.primary_palette="Amber"
+        self.theme_cls.primary_palette = "Amber"
         self.theme_cls.theme_style = "Dark"
-
 
         self.speechtotext = Builder.load_string(speechtotext)
         screen.add_widget(self.speechtotext)
@@ -116,14 +119,11 @@ class MainApp(MDApp):
         self.btntran = Builder.load_string(btntran)
         screen.add_widget(self.btntran)
 
-        self.btnlan = Builder.load_string(btnlan)
-        screen.add_widget(self.btnlan)
-
         self.text = Builder.load_string(text)
         screen.add_widget(self.text)
 
-        self.youtext = Builder.load_string(youtext)
-        screen.add_widget(self.youtext)
+        # self.youtext = Builder.load_string(youtext)
+        # screen.add_widget(self.youtext)
 
         self.trantext = Builder.load_string(trantext)
         screen.add_widget(self.trantext)
@@ -131,25 +131,68 @@ class MainApp(MDApp):
         self.youtrantext = Builder.load_string(youtrantext)
         screen.add_widget(self.youtrantext)
 
+        self.btnclear = Builder.load_string(btnclear)
+        screen.add_widget(self.btnclear)
+
+        self.lanin = MDTextField(multiline=False, font_name="FC Motorway Regular.otf")
+        self.testthai = Label(text="ท ด ส อ บ ", font_name="FC Motorway Regular.otf",
+                              pos_hint={'center_x': 0.85, 'center_y': 0.95})
+
+        self.youtext = Label(text="", font_name="FC Motorway Regular.otf", pos_hint={'center_x': 0.5, 'center_y': 0.75})
+        screen.add_widget(self.youtext)
+
+        screen.add_widget(self.lanin)
+        screen.add_widget(self.testthai)
+
         return screen
+
     def checklan(self):
+        if self.lanin == 'th':
+            # find = language.index(lanin)
+
+            self.lanin = 'FC Motorway Regular.otf'
+
+            self.rec()
+        else:
+            self.lanin = 'en'
+
+            self.rec()
+
         pass
+
+    def clear(self):
+        self.youtext.text = (" ")
+
     def rec(self):
         # GUI Blocking Audio Capture
+        print("Please say something")
+        r = sr.Recognizer()
         with sr.Microphone() as source:
             r.adjust_for_ambient_noise(source)
             audio = r.listen(source)
+
         try:
-            self.output=("You have said")
-            word = r.recognize_google(audio)
-            #textlist.append(word)
-            #self.output=(word)
-            self.youtext.text = self.word.text
-            #self.output=("Audio Recorded Successfully \n ")
-        except Exception as e:
-            self.output=("Error ")
+            print("You have said")
+            # audio = r.listen(source)
+            word = r.recognize_google(audio, None, 'th')
+            print(word)
+            # textlist.append(word)
+            # self.output=(word)
+            # self.youtext.text = self.word.text
+            self.youtext.text = format(word)
+
+            # self.output=("Audio Recorded Successfully \n ")
+
+        except sr.UnknownValueError:
+
+            self.youtext.text = ("Please Try Again")
+
+        except sr.RequestError as e:
+
+            self.youtext.text = ("Error".format(e))
 
         pass
 
 
-MainApp().run()
+if __name__ == '__main__':
+    MainApp().run()
