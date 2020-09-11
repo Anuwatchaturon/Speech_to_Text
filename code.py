@@ -57,8 +57,7 @@ def speech_to_text():
              #break
 
         else:
-            print('No language')
-
+            exit()
 
 def translate():
     src = lanchoose[0]

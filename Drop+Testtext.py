@@ -19,8 +19,8 @@ class LoginScreen(GridLayout):
 
 class DropApp(App):
     def build(self):
-        #return LoginScreen()
         return CustomDropDown()
+
 
 if __name__=='__main__':
     DropApp().run()

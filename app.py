@@ -4,25 +4,36 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
-from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.button import MDRectangleFlatButton
 from kivymd.uix.button import MDRoundFlatButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.textfield import MDTextField
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.button import MDFloatingActionButton
 from kivy.core.window import Window
 import speech_recognition as sr
 from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
-
+from kivymd.uix.list import OneLineAvatarListItem
+from kivymd.uix.menu import MDDropdownMenu, RightContent
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import RectangularElevationBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivy.properties import StringProperty
 from kivymd.uix.menu import MDDropdownMenu
 from googletrans import Translator
+from kivy.lang import Builder
+from kivy.properties import StringProperty
+from kivymd.app import MDApp
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.list import OneLineAvatarListItem
 
 # -*- coding: utf-8 -*-
 
 Window.size = (330, 560)
 
-language = ['th']
-font = ['FC Motorway Regular.otf']
+language = ['th','en']
+font = ['FC Motorway Regular.otf','ABeeZee-Regular.otf']
 lanchoose = []
 textlist = []
 tranlist = []
@@ -102,9 +113,25 @@ MDRectangleFlatButton:
 
 """
 
+lanmenu = '''
+<Item>
+    ImageLeftWidget:
+        source: root.source
+
+FloatLayout:
+    MDFlatButton:
+        text: "Language"
+        pos_hint: {'center_x': .75, 'center_y': .9}
+        on_release: app.show_simple_dialog()
+'''
+
+class Item(OneLineAvatarListItem):
+    divider = None
+    source = StringProperty()
+
 
 class MainApp(MDApp):
-
+    dialog = None
     def build(self):
         screen = Screen()
         self.theme_cls.primary_palette = "Amber"
@@ -134,6 +161,9 @@ class MainApp(MDApp):
         self.btnclear = Builder.load_string(btnclear)
         screen.add_widget(self.btnclear)
 
+        self.lanmenu = Builder.load_string(lanmenu)
+        screen.add_widget(self.lanmenu)
+
         self.lanin = MDTextField(multiline=False, font_name="FC Motorway Regular.otf")
         self.testthai = Label(text="ท ด ส อ บ ", font_name="FC Motorway Regular.otf",
                               pos_hint={'center_x': 0.85, 'center_y': 0.95})
@@ -146,15 +176,30 @@ class MainApp(MDApp):
 
         return screen
 
-    def checklan(self):
-        if self.lanin == 'th':
-            # find = language.index(lanin)
+    def show_simple_dialog(self):
 
-            self.lanin = 'FC Motorway Regular.otf'
+        if not self.dialog:
+            self.dialog = MDDialog(
+                title="Choose Language",
+
+                buttons=[
+                    MDIconButton(
+                        text="CANCEL", text_color=self.theme_cls.primary_color
+                    ),
+                    MDIconButton(
+                        text="ACCEPT", text_color=self.theme_cls.primary_color
+                    ),
+                ],
+            )
+        self.dialog.open()
+    def checklan(self):
+        if self.lanin in language:
+            # find = language.index(lanin)
+            #self.Lanin = 'th'
 
             self.rec()
         else:
-            self.lanin = 'en'
+            #self.lanin = 'en'
 
             self.rec()
 
@@ -174,7 +219,7 @@ class MainApp(MDApp):
         try:
             print("You have said")
             # audio = r.listen(source)
-            word = r.recognize_google(audio, None, 'th')
+            word = r.recognize_google(audio, None, self.lanin)
             print(word)
             # textlist.append(word)
             # self.output=(word)
