@@ -43,13 +43,13 @@ ScreenManager:
     
 <MenuScreen>:
     name: 'menu'
-    MDLabel:
-        id: 'showlan'
+    Label
+        id: showlan
         text: 'show lan '
         halign: 'center'
         pos_hint: {'center_x':0.8,'center_y':0.85}
 
-    Label:
+    Label
         id: speechtotext
         text: 'Speech to Text'
         halign  :'center'
@@ -88,19 +88,33 @@ ScreenManager:
         halign:'center'
         pos_hint: {'center_x':0.15,'center_y':0.2}
         on_press: root.manager.current = 'pix'
+        
 <ProfileScreen>:
     name: 'pix'
     Label
         id : youtext2
         text:'test'
         halign:'center' 
-        pos_hint:{'center_x': 0.5, 'center_y': 0.78}
+        pos_hint:{'center_x': 0.5, 'center_y': 0.5}
     MDFlatButton
         id : lanchoose
         text: 'Language'
         halign:'center'
         pos_hint: {'center_x':0.15,'center_y':0.2}
         on_press: root.manager.current = 'menu'
+    MDFlatButton
+        id : enbtn
+        text: 'English'
+        halign:'center'
+        pos_hint: {'center_x':0.2,'center_y':0.8}
+        on_press: root.enbtn()
+    MDFlatButton
+        id : thbtn
+        text: 'Thai'
+        halign:'center'
+        pos_hint: {'center_x':0.5,'center_y':0.8}
+        on_press: root.thbtn()
+        
     MDFlatButton
         id : xxx
         text: 'xxx'
@@ -116,6 +130,7 @@ class MenuScreen(Screen):
         global x
         txt = 'cheer boi'
         self.ids.youtext.text = x
+        self.ids.showlan.text = x
         print(txt)
 
     def clear(self):
@@ -135,6 +150,15 @@ class ProfileScreen(Screen):
         self.ids.youtext2.text = x
         print(x)
 
+    def thbtn(self):
+        global x
+        x = "Thai"
+        self.ids.youtext2.text = x
+
+    def enbtn(self):
+        global x
+        x = "English"
+        self.ids.youtext2.text = x
     pass
 sm = ScreenManager()
 sm.add_widget(MenuScreen(name='menu'))
