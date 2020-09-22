@@ -52,11 +52,11 @@ MDRectangleFlatButton:
         id : btntran
         text: 'Translate'
         pos_hint: {'center_x':0.7,'center_y':0.1}
-        on_press: 
+        on_press: app.translator()
 
 """
 youtrantext = """
-MDLabel:
+Label:
         id: youtrantext
         text: ' '
         halign: 'center'
@@ -109,7 +109,7 @@ class MainApp(MDApp):
         self.testthai = Label(text="ท ด ส อ บ ", font_name="FC Motorway Regular.otf",
                               pos_hint={'center_x': 0.85, 'center_y': 0.95})
 
-        self.youtext = Label(text="", font_name="FC Motorway Regular.otf", pos_hint={'center_x': 0.5, 'center_y': 0.75})
+        self.youtext = Label(text="fish", font_name="FC Motorway Regular.otf", pos_hint={'center_x': 0.5, 'center_y': 0.75})
         screen.add_widget(self.youtext)
 
         screen.add_widget(self.testthai)
@@ -133,6 +133,7 @@ class MainApp(MDApp):
         try:
             print("You have said")
             # audio = r.listen(source)
+            global  word
             word = r.recognize_google(audio, None, 'th')
             print(word)
             # textlist.append(word)
@@ -149,8 +150,14 @@ class MainApp(MDApp):
         except sr.RequestError as e:
 
             self.youtext.text = ("Error".format(e))
-
-        pass
+    def translator(self):
+            src = 'en'
+            dest = 'th'
+            translator = Translator()
+            testword = 'fish'
+            result = translator.translate(testword, src=src, dest=dest)
+            self.youtrantext.text = result
+        #pass
 
 
 if __name__ == '__main__':

@@ -30,24 +30,25 @@ from kivymd.uix.list import OneLineAvatarIconListItem
 
 # -*- coding: utf-8 -*-
 from googletrans import Translator
+
 Window.size = (330, 560)
 
-language = ['th','en']
-font = ['FC Motorway Regular.otf','ABeeZee-Regular.otf']
+language = ['th', 'en']
+font = ['FC Motorway Regular.otf', 'ABeeZee-Regular.otf']
 
 screen_helper = """
 ScreenManager:
     MenuScreen:
     ProfileScreen:
     UploadScreen:
-    
+
 <MenuScreen>:
     name: 'menu'
     Label
         id: showmlan
         text: 'xxxx'
         halign: 'center'
-        pos_hint: {'center_x':0.85,'center_y':0.85}
+        pos_hint: {'center_x':0.85,'center_y':0.94}
     Label
         id: showmlan2
         text: 'xxxx'
@@ -55,14 +56,14 @@ ScreenManager:
         pos_hint: {'center_x':0.85,'center_y':0.5}
     MDFlatButton:
         id : lanchoose
-        text: ' '
+        text: 'Language '
         halign:'center'
-        pos_hint: {'center_x':0.85,'center_y':0.85}
+        pos_hint: {'center_x':0.15,'center_y':0.2}
         on_press: root.manager.current = 'profile'
     MDFlatButton:
-        text: ' '
+        text: 'Language Traget'
         halign:'center'
-        pos_hint: {'center_x':0.85,'center_y':0.5}
+        pos_hint: {'center_x':0.2,'center_y':0.1}
         on_press: root.manager.current = 'upload' 
     Label
         id: speechtotext
@@ -81,13 +82,13 @@ ScreenManager:
         font_style:'Subtitle2'
     Label
         id : youtext
-        text:''
+        text:'submarine'
         halign:'center' 
         font_name:"FC Motorway Regular.otf"
         pos_hint:{'center_x': 0.5, 'center_y': 0.78}
     Label
         id: youtrantext
-        text: ''
+        text: ' '
         halign: 'center'
         pos_hint:{'center_x': 0.5, 'center_y': 0.43}
         font_name:"FC Motorway Regular.otf"
@@ -109,8 +110,8 @@ ScreenManager:
         id : btntran
         text: 'Translate'
         pos_hint: {'center_x':0.83,'center_y':0.1}
-        on_press: root.translate()
-    MDRectangleFlatButton
+        on_press: root.translator()
+    MDRectangleFlatButton:
         id : btnrec
         text: 'Record'
         pos_hint: {'center_x':0.5,'center_y':0.15}
@@ -119,15 +120,14 @@ ScreenManager:
     MDIconButton
         id : restart
         icon: "restart"
-        pos_hint: {'center_x':0.61,'center_y':0.85}
+        pos_hint: {'center_x':0.68,'center_y':0.93}
         on_release: root.linklan()
-        
     MDIconButton
         id : restart2
         icon: "restart"
-        pos_hint: {'center_x':0.61,'center_y':0.5}
+        pos_hint: {'center_x':0.68,'center_y':0.5}
         on_release: root.linklan2()
-        
+
 <ProfileScreen>:
     name: 'profile'
     MDRectangleFlatButton:
@@ -157,9 +157,12 @@ ScreenManager:
         text:'xxxx'
         halign:'center' 
         pos_hint:{'center_x': 0.8, 'center_y': 0.95} 
-        
+
 <UploadScreen>:
     name: 'upload'
+    MDLabel
+        text: 'Upload'
+        halign: 'center'
     MDRectangleFlatButton:
         text: 'Back'
         pos_hint: {'center_x':0.2,'center_y':0.9}
@@ -183,15 +186,16 @@ ScreenManager:
         pos_hint: {'center_x':0.5,'center_y':0.8}
         on_press: root.thbtn()
     Label
-        id : showxlan
+        id : showlan
         text:'xxxx'
         halign:'center' 
         pos_hint:{'center_x': 0.8, 'center_y': 0.95} 
 
+
 """
 
-class MenuScreen(Screen):
 
+class MenuScreen(Screen):
     def clear(self):
         self.ids.youtext.text = ' '
         self.ids.youtrantext.text = ' '
@@ -199,12 +203,14 @@ class MenuScreen(Screen):
     def linklan(self):
         global x
         global showmlan
+        global showlan
         showmlan = x
         self.ids.showmlan.text = x
 
     def linklan2(self):
         global xx
         global showmlan
+        global showlan
         showmlan = xx
         self.ids.showmlan2.text = xx
 
@@ -219,9 +225,7 @@ class MenuScreen(Screen):
             print("You have said")
             # audio = r.listen(source)
             global word
-            global y
-            word = r.recognize_google(audio, None, y)
-            print(showlan)
+            word = r.recognize_google(audio, None, showmlan)
             print(word)
             # textlist.append(word)
             # self.output=(word)
@@ -229,24 +233,19 @@ class MenuScreen(Screen):
             self.ids.youtext.text = format(word)
             # self.output=("Audio Recorded Successfully \n ")
         except sr.UnknownValueError:
-            self.ids.youtext.text= ("Please Try Again")
+            self.ids.youtext.text = ("Please Try Again")
         except sr.RequestError as e:
             self.ids.youtext.text = ("Error".format(e))
         pass
 
-    def translate(self):
-        global showxlan
-        global showlan
-        global word
-        src = showlan
-        dest = showxlan
-        tword = word
+    def translator(self):
         translator = Translator()
-        result = translator.translate(tword, src=src, dest=dest)
-        result = result.text
+        result = translator.translate("submarine", src='en', dest='th')
         self.ids.youtrantext.text = result
 
     pass
+
+
 class ProfileScreen(Screen):
     def thbtn(self):
         global x
@@ -267,31 +266,35 @@ class ProfileScreen(Screen):
         self.ids.showlan.text = y
 
     pass
+
+
 class UploadScreen(Screen):
     def thbtn(self):
         global xx
         global yy
-        global  showxlan
+        global showlan
         xx = "Thai"
         yy = 'th'
-        showxlan = yy
-        self.ids.showxlan.text = yy
+        showlan = yy
+        self.ids.showlan.text = yy
 
     def enbtn(self):
         global xx
         global yy
-        global showxlan
+        global showlan
         xx = "English"
         yy = 'en'
-        showxlan = yy
-        self.ids.showxlan.text = yy
+        showlan = yy
+        self.ids.showlan.text = yy
 
     pass
+
 
 sm = ScreenManager()
 sm.add_widget(MenuScreen(name='menu'))
 sm.add_widget(ProfileScreen(name='profile'))
 sm.add_widget(UploadScreen(name='upload'))
+
 
 class MainApp(MDApp):
     def build(self):
@@ -299,6 +302,7 @@ class MainApp(MDApp):
         self.theme_cls.theme_style = "Dark"
         screen = Builder.load_string(screen_helper)
         return screen
+
 
 if __name__ == '__main__':
     MainApp().run()
