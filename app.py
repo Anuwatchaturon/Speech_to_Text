@@ -37,36 +37,38 @@ font = ['FC Motorway Regular.otf','ABeeZee-Regular.otf']
 
 screen_helper = """
 ScreenManager:
-    MenuScreen:
+    MainScreen:
     ProfileScreen:
     UploadScreen:
     
-<MenuScreen>:
-    name: 'menu'
+<MainScreen>:
+    name: 'main'
     Label
         id: showmlan
-        text: 'xxxx'
+        text: 'language'
         halign: 'center'
-        pos_hint: {'center_x':0.85,'center_y':0.85}
+        pos_hint: {'center_x':0.75,'center_y':0.85}
     Label
         id: showmlan2
-        text: 'xxxx'
+        text: 'language'
         halign: 'center'
-        pos_hint: {'center_x':0.85,'center_y':0.5}
+        pos_hint: {'center_x':0.75,'center_y':0.5}
     MDFlatButton:
         id : lanchoose
         text: ' '
         halign:'center'
-        pos_hint: {'center_x':0.85,'center_y':0.85}
+        pos_hint: {'center_x':0.75,'center_y':0.85}
         on_press: root.manager.current = 'profile'
     MDFlatButton:
+        id : tranlanchoose
         text: ' '
         halign:'center'
-        pos_hint: {'center_x':0.85,'center_y':0.5}
+        pos_hint: {'center_x':0.75,'center_y':0.5}
         on_press: root.manager.current = 'upload' 
     Label
         id: speechtotext
         text: 'Speech to Text'
+        markup: True
         halign  :'center'
         pos_hint:{'center_x': 0.3, 'center_y': 0.93} 
         font_style:'Subtitle1' 
@@ -83,14 +85,14 @@ ScreenManager:
         id : youtext
         text:''
         halign:'center' 
-        font_name:"FC Motorway Regular.otf"
+        font_name:"arial-unicode-ms.otf"
         pos_hint:{'center_x': 0.5, 'center_y': 0.78}
     Label
         id: youtrantext
         text: ''
         halign: 'center'
         pos_hint:{'center_x': 0.5, 'center_y': 0.43}
-        font_name:"FC Motorway Regular.otf"
+        font_name:"arial-unicode-ms.otf"
         font_style :'Subtitle2'
     MDLabel
         id:translator
@@ -103,41 +105,38 @@ ScreenManager:
     MDFlatButton:
         id : btnclear
         text: 'Clear'
-        pos_hint: {'center_x':0.83,'center_y':0.20}
+        pos_hint: {'center_x':0.83,'center_y':0.08}
         on_press: root.clear()
     MDFlatButton:
         id : btntran
         text: 'Translate'
-        pos_hint: {'center_x':0.83,'center_y':0.1}
+        pos_hint: {'center_x':0.17,'center_y':0.08}
         on_press: root.translate()
     MDRectangleFlatButton
         id : btnrec
         text: 'Record'
-        pos_hint: {'center_x':0.5,'center_y':0.15}
+        pos_hint: {'center_x':0.5,'center_y':0.08}
         on_release: root.rec()
         readonly: True
-    MDIconButton
-        id : restart
-        icon: "restart"
-        pos_hint: {'center_x':0.61,'center_y':0.85}
-        on_release: root.linklan()
-        
-    MDIconButton
-        id : restart2
-        icon: "restart"
-        pos_hint: {'center_x':0.61,'center_y':0.5}
-        on_release: root.linklan2()
         
 <ProfileScreen>:
     name: 'profile'
+    MDIconButton
+        icon: "chevron-double-left"
+        theme_text_color:"Custom"
+        text_color:(255 / 255, 195 / 255, 0 / 255)
+        pos_hint: {'center_x':0.15,'center_y':0.9}
+        on_press: root.manager.current = 'main' 
+        
     MDRectangleFlatButton:
-        text: 'Back'
-        pos_hint: {'center_x':0.2,'center_y':0.9}
-        on_press: root.manager.current = 'menu' 
+        id : use
+        text: 'USE'
+        pos_hint: {'center_x':0.5,'center_y':0.1}
+        on_press: app.main.linklan()
     MDLabel
-        text :' Choose Language'
+        text :'Language'
         halign : 'center'
-        pos_hint:{'center_x': 0.7, 'center_y': 0.9} 
+        pos_hint:{'center_x': 0.8, 'center_y': 0.9} 
         font_style : 'Subtitle1'
         font_size : 20
     MDFlatButton
@@ -152,22 +151,35 @@ ScreenManager:
         halign:'center'
         pos_hint: {'center_x':0.5,'center_y':0.8}
         on_press: root.thbtn()
+    MDFlatButton
+        id : rubtn
+        text: 'Russia'
+        halign:'center'
+        pos_hint: {'center_x':0.8,'center_y':0.8}
+        on_press: root.rubtn()
     Label
         id : showlan
         text:'xxxx'
         halign:'center' 
         pos_hint:{'center_x': 0.8, 'center_y': 0.95} 
-        
+
 <UploadScreen>:
     name: 'upload'
+    MDIconButton
+        icon: "chevron-double-left"
+        theme_text_color:"Custom"
+        text_color:(255 / 255, 195 / 255, 0 / 255)
+        pos_hint: {'center_x':0.15,'center_y':0.9}
+        on_press: root.manager.current = 'main' 
     MDRectangleFlatButton:
-        text: 'Back'
-        pos_hint: {'center_x':0.2,'center_y':0.9}
-        on_press: root.manager.current = 'menu'
+        id : use
+        text: 'USE'
+        pos_hint: {'center_x':0.5,'center_y':0.1}
+        on_press: app.main.linklan()
     MDLabel
-        text :' Choose Language'
+        text :'Language'
         halign : 'center'
-        pos_hint:{'center_x': 0.7, 'center_y': 0.9} 
+        pos_hint:{'center_x': 0.8, 'center_y': 0.9} 
         font_style : 'Subtitle1'
         font_size : 20
     MDFlatButton
@@ -182,6 +194,12 @@ ScreenManager:
         halign:'center'
         pos_hint: {'center_x':0.5,'center_y':0.8}
         on_press: root.thbtn()
+    MDFlatButton
+        id : labtn
+        text: 'Russia'
+        halign:'center'
+        pos_hint: {'center_x':0.8,'center_y':0.8}
+        on_press: root.rubtn()
     Label
         id : showxlan
         text:'xxxx'
@@ -190,64 +208,68 @@ ScreenManager:
 
 """
 
-class MenuScreen(Screen):
+class MainScreen(Screen):
+
+    def linklan(self):
+        global x
+        self.ids.showmlan.text = x
 
     def clear(self):
         self.ids.youtext.text = ' '
         self.ids.youtrantext.text = ' '
 
-    def linklan(self):
-        global x
-        global showmlan
-        showmlan = x
-        self.ids.showmlan.text = x
-
-    def linklan2(self):
-        global xx
-        global showmlan
-        showmlan = xx
-        self.ids.showmlan2.text = xx
-
     def rec(self):
-        # GUI Blocking Audio Capture
-        print("Please say something")
-        r = sr.Recognizer()
-        with sr.Microphone() as source:
-            r.adjust_for_ambient_noise(source)
-            audio = r.listen(source)
-        try:
-            print("You have said")
-            # audio = r.listen(source)
-            global word
-            global y
-            word = r.recognize_google(audio, None, y)
-            print(showlan)
-            print(word)
-            # textlist.append(word)
-            # self.output=(word)
-            # self.youtext.text = self.word.text
-            self.ids.youtext.text = format(word)
-            # self.output=("Audio Recorded Successfully \n ")
-        except sr.UnknownValueError:
-            self.ids.youtext.text= ("Please Try Again")
-        except sr.RequestError as e:
-            self.ids.youtext.text = ("Error".format(e))
+        if showlan == "":
+            self.ids.youtext.text = ("Please select language")
+        else:
+            # GUI Blocking Audio Capture
+            print("Please say something")
+            r = sr.Recognizer()
+            with sr.Microphone() as source:
+                r.adjust_for_ambient_noise(source)
+                audio = r.listen(source)
+            try:
+                print("You have said")
+                # audio = r.listen(source)
+                global word
+                global y
+                word = r.recognize_google(audio, None, y)
+                print(showlan)
+                print(word)
+                # textlist.append(word)
+                # self.output=(word)
+                # self.youtext.text = self.word.text
+                self.ids.youtext.text = format(word)
+                # self.output=("Audio Recorded Successfully \n ")
+            except sr.UnknownValueError:
+                self.ids.youtext.text= ("Please Try Again")
+            except sr.RequestError as e:
+                self.ids.youtext.text = ("Error".format(e))
         pass
 
     def translate(self):
         global showxlan
         global showlan
         global word
-        src = showlan
-        dest = showxlan
-        tword = word
-        translator = Translator()
-        result = translator.translate(tword, src=src, dest=dest)
-        result = result.text
-        self.ids.youtrantext.text = result
+        if showlan == "":
+            self.ids.youtrantext.text = "No word to Translate"
+        elif showxlan == "":
+            self.ids.youtrantext.text = "Please select language"
+        else:
+            src = showlan
+            dest = showxlan
+            tword = word
+            translator = Translator()
+            result = translator.translate(tword, src=src, dest=dest)
+            result = result.text
+            self.ids.youtrantext.text = result
 
     pass
+
 class ProfileScreen(Screen):
+    global showlan
+    showlan = ""
+
     def thbtn(self):
         global x
         global y
@@ -266,8 +288,19 @@ class ProfileScreen(Screen):
         showlan = y
         self.ids.showlan.text = y
 
+    def rubtn(self):
+        global x
+        global y
+        global showlan
+        x = "Russia"
+        y = 'ru'
+        showlan = y
+        self.ids.showlan.text = y
+
     pass
 class UploadScreen(Screen):
+    global showxlan
+    showxlan = ""
     def thbtn(self):
         global xx
         global yy
@@ -286,14 +319,24 @@ class UploadScreen(Screen):
         showxlan = yy
         self.ids.showxlan.text = yy
 
+    def rubtn(self):
+        global xx
+        global yy
+        global showxlan
+        xx = "Russia"
+        yy = 'ru'
+        showxlan = yy
+        self.ids.showxlan.text = yy
+
     pass
 
 sm = ScreenManager()
-sm.add_widget(MenuScreen(name='menu'))
+sm.add_widget(MainScreen(name='main'))
 sm.add_widget(ProfileScreen(name='profile'))
 sm.add_widget(UploadScreen(name='upload'))
 
 class MainApp(MDApp):
+    main = MainScreen()
     def build(self):
         self.theme_cls.primary_palette = "Amber"
         self.theme_cls.theme_style = "Dark"
