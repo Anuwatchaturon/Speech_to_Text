@@ -155,6 +155,18 @@ ScreenManager:
         halign:'center'
         pos_hint: {'center_x':0.8,'center_y':0.8}
         on_press: root.rubtn()
+    MDFlatButton
+        id : frbtn
+        text: 'French'
+        halign:'center'
+        pos_hint: {'center_x':0.2,'center_y':0.7}
+        on_press: root.frbtn()
+    MDFlatButton
+        id : debtn
+        text: 'Germany'
+        halign:'center'
+        pos_hint: {'center_x':0.5,'center_y':0.7}
+        on_press: root.debtn()
     Label
         id : showlan
         text:'xxxx'
@@ -193,11 +205,23 @@ ScreenManager:
         pos_hint: {'center_x':0.5,'center_y':0.8}
         on_press: root.thbtn()
     MDFlatButton
-        id : labtn
+        id : rubtn
         text: 'Russia'
         halign:'center'
         pos_hint: {'center_x':0.8,'center_y':0.8}
         on_press: root.rubtn()
+    MDFlatButton
+        id : frbtn
+        text: 'French'
+        halign:'center'
+        pos_hint: {'center_x':0.2,'center_y':0.7}
+        on_press: root.frbtn()
+    MDFlatButton
+        id : debtn
+        text: 'Germany'
+        halign:'center'
+        pos_hint: {'center_x':0.5,'center_y':0.7}
+        on_press: root.debtn()
     Label
         id : showxlan
         text:'xxxx'
@@ -295,6 +319,24 @@ class ProfileScreen(Screen):
         y = 'ru'
         showlan = y
         self.ids.showlan.text = y
+
+    def frbtn(self):
+        global x
+        global y
+        global showlan
+        x = "French"
+        y = 'fr'
+        showlan = y
+        self.ids.showlan.text = y
+
+    def debtn(self):
+        global x
+        global y
+        global showlan
+        x = "Germany"
+        y = 'de'
+        showlan = y
+        self.ids.showlan.text = y
     pass
 
 class UploadScreen(Screen):
@@ -308,7 +350,6 @@ class UploadScreen(Screen):
         yy = 'th'
         showxlan = yy
         self.ids.showxlan.text = yy
-
     def enbtn(self):
         global xx
         global yy
@@ -317,7 +358,6 @@ class UploadScreen(Screen):
         yy = 'en'
         showxlan = yy
         self.ids.showxlan.text = yy
-
     def rubtn(self):
         global xx
         global yy
@@ -326,6 +366,22 @@ class UploadScreen(Screen):
         yy = 'ru'
         showxlan = yy
         self.ids.showxlan.text = yy
+    def frbtn(self):
+        global xx
+        global yy
+        global showlan
+        x = "French"
+        y = 'fr'
+        showlan = yy
+        self.ids.showlan.text = yy
+    def debtn(self):
+        global xx
+        global yy
+        global showlan
+        x = "Germany"
+        y = 'de'
+        showlan = yy
+        self.ids.showlan.text = yy
     pass
 
 sm = ScreenManager()
