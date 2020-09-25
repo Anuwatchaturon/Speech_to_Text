@@ -32,9 +32,6 @@ from kivymd.uix.list import OneLineAvatarIconListItem
 from googletrans import Translator
 Window.size = (330, 560)
 
-language = ['th','en']
-font = ['FC Motorway Regular.otf','ABeeZee-Regular.otf']
-
 screen_helper = """
 ScreenManager:
     MainScreen:
@@ -48,11 +45,13 @@ ScreenManager:
         text: 'language'
         halign: 'center'
         pos_hint: {'center_x':0.75,'center_y':0.85}
+        
     Label
         id: showmlan2
         text: 'language'
         halign: 'center'
         pos_hint: {'center_x':0.75,'center_y':0.5}
+        
     MDFlatButton:
         id : lanchoose
         text: ' '
@@ -126,13 +125,12 @@ ScreenManager:
         theme_text_color:"Custom"
         text_color:(255 / 255, 195 / 255, 0 / 255)
         pos_hint: {'center_x':0.15,'center_y':0.9}
-        on_press: root.manager.current = 'main' 
-        
+        on_press: root.manager.current = 'main'   
     MDRectangleFlatButton:
         id : use
         text: 'USE'
         pos_hint: {'center_x':0.5,'center_y':0.1}
-        on_press: app.main.linklan()
+        on_press: root.linklan()
     MDLabel
         text :'Language'
         halign : 'center'
@@ -175,7 +173,7 @@ ScreenManager:
         id : use
         text: 'USE'
         pos_hint: {'center_x':0.5,'center_y':0.1}
-        on_press: app.main.linklan()
+        on_press: 
     MDLabel
         text :'Language'
         halign : 'center'
@@ -209,10 +207,6 @@ ScreenManager:
 """
 
 class MainScreen(Screen):
-
-    def linklan(self):
-        global x
-        self.ids.showmlan.text = x
 
     def clear(self):
         self.ids.youtext.text = ' '
@@ -263,12 +257,17 @@ class MainScreen(Screen):
             result = translator.translate(tword, src=src, dest=dest)
             result = result.text
             self.ids.youtrantext.text = result
-
     pass
 
 class ProfileScreen(Screen):
     global showlan
     showlan = ""
+
+    def __init__(self, **kwargs):
+        super(ProfileScreen, self).__init__(**kwargs)
+
+    def linklan(self):
+        self.ids.showmlan.text = x
 
     def thbtn(self):
         global x
@@ -296,8 +295,8 @@ class ProfileScreen(Screen):
         y = 'ru'
         showlan = y
         self.ids.showlan.text = y
-
     pass
+
 class UploadScreen(Screen):
     global showxlan
     showxlan = ""
@@ -327,7 +326,6 @@ class UploadScreen(Screen):
         yy = 'ru'
         showxlan = yy
         self.ids.showxlan.text = yy
-
     pass
 
 sm = ScreenManager()
@@ -336,7 +334,6 @@ sm.add_widget(ProfileScreen(name='profile'))
 sm.add_widget(UploadScreen(name='upload'))
 
 class MainApp(MDApp):
-    main = MainScreen()
     def build(self):
         self.theme_cls.primary_palette = "Amber"
         self.theme_cls.theme_style = "Dark"
