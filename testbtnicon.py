@@ -1,27 +1,37 @@
 from kivy.lang import Builder
-
 from kivymd.app import MDApp
-
-
-from kivymd.uix.screen import Screen
-
-from kivymd.uix.button import MDIconButton
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
 
 KV = '''
-Screen:
-
-    MDIconButton:
-        icon: "language-python"
-        pos_hint: {"center_x": .5, "center_y": .5}
+FloatLayout:
+    MDFlatButton:
+        text: "ALERT DIALOG"
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        on_release: app.show_alert_dialog()
 '''
 
 
 class Example(MDApp):
+    dialog = None
+
     def build(self):
-        screen = Screen()
-        self.iconbtn = MDIconButton(icon='language-python')
-        screen.add_widget(self.iconbtn)
-        return screen
+        return Builder.load_string(KV)
+
+    def show_alert_dialog(self):
+        if not self.dialog:
+            self.dialog = MDDialog(
+                text="Discard draft?",
+                buttons=[
+                    MDFlatButton(
+                        text="CANCEL", text_color=self.theme_cls.primary_color
+                    ),
+                    MDFlatButton(
+                        text="DISCARD", text_color=self.theme_cls.primary_color
+                    ),
+                ],
+            )
+        self.dialog.open()
 
 
 Example().run()

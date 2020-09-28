@@ -27,220 +27,260 @@ from kivy.properties import StringProperty
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import OneLineAvatarListItem
 from kivymd.uix.list import OneLineAvatarIconListItem
+from kivymd.uix.dialog import MDDialog
 
 # -*- coding: utf-8 -*-
 from googletrans import Translator
-Window.size = (330, 560)
+from kivy.config import Config
+Config.set('graphics', 'width', '330')
+Config.set('graphics', 'height', '560')
+
 
 screen_helper = """
 ScreenManager:
-    MainScreen:
-    ProfileScreen:
-    UploadScreen:
-    
-<MainScreen>:
+    Screen01:
+    Screen02:
+    Screen03:
+
+<Screen01>:
     name: 'main'
-    Label
-        id: showmlan
-        text: 'language'
-        halign: 'center'
-        pos_hint: {'center_x':0.75,'center_y':0.85}
-        
-    Label
-        id: showmlan2
-        text: 'language'
-        halign: 'center'
-        pos_hint: {'center_x':0.75,'center_y':0.5}
-        
-    MDFlatButton:
-        id : lanchoose
-        text: ' '
-        halign:'center'
-        pos_hint: {'center_x':0.75,'center_y':0.85}
-        on_press: root.manager.current = 'profile'
-    MDFlatButton:
-        id : tranlanchoose
-        text: ' '
-        halign:'center'
-        pos_hint: {'center_x':0.75,'center_y':0.5}
-        on_press: root.manager.current = 'upload' 
-    Label
-        id: speechtotext
-        text: 'Speech to Text'
-        markup: True
-        halign  :'center'
-        pos_hint:{'center_x': 0.3, 'center_y': 0.93} 
-        font_style:'Subtitle1' 
-        font_size:25
-    MDLabel
-        id : text
-        text: 'Text' 
+    FloatLayout:
+        orientation: 'horizontal'
+        canvas:
+            Rectangle:
+                source: 'TT1.png'
+                size: self.size
+                pos: self.pos
+    BoxLayout:
+        orientation: 'vertical'
+    MDRectangleFlatButton
+        text:"record"
         theme_text_color:"Custom"
-        text_color:(255 / 255, 195 / 255, 0 / 255)
-        halign:'center'
-        pos_hint:{'center_x': 0.17, 'center_y': 0.85}
-        font_style:'Subtitle2'
+        text_color: 1, 0, 0, 1
+        pos_hint: {'center_x':0.3,'center_y':0.47}
+        on_press: root.manager.current = 'rec'   
+    MDRectangleFlatButton
+        text:"history"
+        theme_text_color:"Custom"
+        text_color: 0, 1, 1, 1
+        pos_hint: {'center_x':0.7,'center_y':0.47}
+        on_press: root.manager.current = 'history'   
+    
+<Screen02>:
+    name: 'rec'
+    FloatLayout:
+        orientation: 'horizontal'
+        canvas:
+            Rectangle:
+                source: 't1.2.png'
+                size: self.size
+                pos: self.pos
+    BoxLayout:
+        orientation: 'vertical'
     Label
         id : youtext
         text:''
-        halign:'center' 
-        font_name:"arial-unicode-ms.otf"
-        pos_hint:{'center_x': 0.5, 'center_y': 0.78}
-    Label
-        id: youtrantext
-        text: ''
-        halign: 'center'
-        pos_hint:{'center_x': 0.5, 'center_y': 0.43}
-        font_name:"arial-unicode-ms.otf"
-        font_style :'Subtitle2'
-    MDLabel
-        id:translator
-        text:'Translator '
-        theme_text_color:"Custom"
-        text_color:(255 / 255, 195 / 255, 0 / 255)
         halign:'center'
-        pos_hint:{'center_x': 0.17, 'center_y': 0.5}
-        font_style:'Subtitle2'
-    MDFlatButton:
-        id : btnclear
-        text: 'Clear'
-        pos_hint: {'center_x':0.83,'center_y':0.08}
+        font_name:"arial-unicode-ms.otf"
+        pos_hint:{'center_x': 0.5, 'center_y': 0.72}
+        text_size: root.width,None
+        size: self.texture_size
+    Label
+        id : youtrantext
+        text:''
+        halign:'center'
+        font_name:"arial-unicode-ms.otf"
+        pos_hint:{'center_x': 0.5, 'center_y': 0.3}
+        text_size: root.width,None
+        size: self.texture_size
+    MDIconButton:
+        icon: "microphone"
+        user_font_size: "45sp"
+        pos_hint: {"center_x": .5, "center_y": .07}
+        on_press: root.rec()
+    MDIconButton:
+        icon: "delete"
+        user_font_size: "25sp"
+        pos_hint: {"center_x": .5, "center_y": .5}
         on_press: root.clear()
-    MDFlatButton:
-        id : btntran
-        text: 'Translate'
-        pos_hint: {'center_x':0.17,'center_y':0.08}
+    MDIconButton:
+        icon: "format-letter-case"
+        user_font_size: "25sp"
+        pos_hint: {"center_x": .9, "center_y": .17}
         on_press: root.translate()
-    MDRectangleFlatButton
-        id : btnrec
-        text: 'Record'
-        pos_hint: {'center_x':0.5,'center_y':0.08}
-        on_release: root.rec()
-        readonly: True
-        
-<ProfileScreen>:
-    name: 'profile'
+####################################################################
+    MDFlatButton:
+        id: Buttontext
+        text: ''
+        on_release: dropdown.open(self)
+        theme_text_color:"Custom"
+        text_color:(0/255, 237/255, 255/255 )
+        size_hint_y: None
+        pos_hint: {"center_x": .25, "center_y": .5}
+    MDLabel
+        id:btnlanshow1
+        text:'Language'
+        theme_text_color:"Custom"
+        text_color:(0/255, 237/255, 255/255 )
+        halign:'center'
+        pos_hint:{'center_x': 0.25, 'center_y': 0.5}
+        font_style:'Subtitle2'
+    DropDown:
+        id: dropdown
+        MDFlatButton
+            id : lan01
+            text: 'English'
+            theme_text_color:"Custom"
+            text_color:(0/255, 237/255, 255/255 )
+            on_release: root.lan01()
+            readonly: True
+        MDFlatButton
+            id : lan02
+            text: 'Thai'
+            theme_text_color:"Custom"
+            text_color:(0/255, 237/255, 255/255 )
+            on_release: root.lan02()
+            readonly: True
+        MDFlatButton
+            id : lan03
+            text: 'Russia'
+            theme_text_color:"Custom"
+            text_color:(0/255, 237/255, 255/255 )
+            on_release: root.lan03()
+            readonly: True
+        MDFlatButton
+            id : lan04
+            text: 'France'
+            theme_text_color:"Custom"
+            text_color:(0/255, 237/255, 255/255 )
+            on_release: root.lan04()
+            readonly: True
+        MDFlatButton
+            id : lan05
+            text: 'Germany'
+            theme_text_color:"Custom"
+            text_color:(0/255, 237/255, 255/255 )
+            on_release: root.lan05()
+            readonly: True
+####################################################################
+    MDFlatButton:
+        id: Buttontexttran
+        text: ''
+        on_release: dropdown2.open(self)
+        pos_hint: {"center_x": .75, "center_y": .5}
+    MDLabel
+        id:btnlanshow2
+        text:'Language '
+        theme_text_color:"Custom"
+        text_color:(255/255, 0/255, 65/255 )
+        halign:'center'
+        pos_hint: {"center_x": .75, "center_y": .5}
+        font_style:'Subtitle2'
+    DropDown:
+        id: dropdown2
+        on_select: btn.text = '{}' .format(args[1])
+        MDFlatButton
+            id : lan10
+            text: 'English'
+            theme_text_color:"Custom"
+            text_color:(255/255, 0/255, 65/255 )
+            on_release: root.lan10()
+        MDFlatButton
+            id : lan20
+            text: 'Thai'
+            theme_text_color:"Custom"
+            text_color:(255/255, 0/255, 65/255 )
+            on_release: root.lan20()
+        MDFlatButton
+            id : lan30
+            text: 'Russia'
+            theme_text_color:"Custom"
+            text_color:(255/255, 0/255, 65/255 )
+            on_release: root.lan30()
+        MDFlatButton
+            id : lan40
+            text: 'France'
+            theme_text_color:"Custom"
+            text_color:(255/255, 0/255, 65/255 )
+            on_release: root.lan40()
+        MDFlatButton
+            id : lan50
+            text: 'Germany'
+            theme_text_color:"Custom"
+            text_color:(255/255, 0/255, 65/255 )
+            on_release: root.lan50()
     MDIconButton
         icon: "chevron-double-left"
         theme_text_color:"Custom"
-        text_color:(255 / 255, 195 / 255, 0 / 255)
+        text_color:(255 / 255, 255 / 255, 255 / 255)
         pos_hint: {'center_x':0.15,'center_y':0.9}
         on_press: root.manager.current = 'main'   
-    MDRectangleFlatButton:
-        id : use
-        text: 'USE'
-        pos_hint: {'center_x':0.5,'center_y':0.1}
-        on_press: root.linklan()
-    MDLabel
-        text :'Language'
-        halign : 'center'
-        pos_hint:{'center_x': 0.8, 'center_y': 0.9} 
-        font_style : 'Subtitle1'
-        font_size : 20
-    MDFlatButton
-        id : enbtn
-        text: 'English'
-        halign:'center'
-        pos_hint: {'center_x':0.2,'center_y':0.8}
-        on_press: root.enbtn()
-    MDFlatButton
-        id : thbtn
-        text: 'Thai'
-        halign:'center'
-        pos_hint: {'center_x':0.5,'center_y':0.8}
-        on_press: root.thbtn()
-    MDFlatButton
-        id : rubtn
-        text: 'Russia'
-        halign:'center'
-        pos_hint: {'center_x':0.8,'center_y':0.8}
-        on_press: root.rubtn()
-    MDFlatButton
-        id : frbtn
-        text: 'French'
-        halign:'center'
-        pos_hint: {'center_x':0.2,'center_y':0.7}
-        on_press: root.frbtn()
-    MDFlatButton
-        id : debtn
-        text: 'Germany'
-        halign:'center'
-        pos_hint: {'center_x':0.5,'center_y':0.7}
-        on_press: root.debtn()
-    Label
-        id : showlan
-        text:'xxxx'
-        halign:'center' 
-        pos_hint:{'center_x': 0.8, 'center_y': 0.95} 
+    
 
-<UploadScreen>:
-    name: 'upload'
+<Screen03>:
+    name: 'history'
+    FloatLayout:
+        orientation: 'horizontal'
+        canvas:
+            Rectangle:
+                source: 'TT2.png'
+                size: self.size
+                pos: self.pos
+    BoxLayout:
+        orientation: 'vertical'
+        
+    MDRectangleFlatButton
+        text:"show"
+        theme_text_color:"Custom"
+        
+        pos_hint: {'center_x':0.5,'center_y':0.5}
+        on_release:  root.show_alert_dialog()
+
     MDIconButton
         icon: "chevron-double-left"
         theme_text_color:"Custom"
-        text_color:(255 / 255, 195 / 255, 0 / 255)
+        text_color:(255 / 255, 255 / 255, 255 / 255)
         pos_hint: {'center_x':0.15,'center_y':0.9}
-        on_press: root.manager.current = 'main' 
-    MDRectangleFlatButton:
-        id : use
-        text: 'USE'
-        pos_hint: {'center_x':0.5,'center_y':0.1}
-        on_press: 
-    MDLabel
-        text :'Language'
-        halign : 'center'
-        pos_hint:{'center_x': 0.8, 'center_y': 0.9} 
-        font_style : 'Subtitle1'
-        font_size : 20
-    MDFlatButton
-        id : enbtn
-        text: 'English'
-        halign:'center'
-        pos_hint: {'center_x':0.2,'center_y':0.8}
-        on_press: root.enbtn()
-    MDFlatButton
-        id : thbtn
-        text: 'Thai'
-        halign:'center'
-        pos_hint: {'center_x':0.5,'center_y':0.8}
-        on_press: root.thbtn()
-    MDFlatButton
-        id : rubtn
-        text: 'Russia'
-        halign:'center'
-        pos_hint: {'center_x':0.8,'center_y':0.8}
-        on_press: root.rubtn()
-    MDFlatButton
-        id : frbtn
-        text: 'French'
-        halign:'center'
-        pos_hint: {'center_x':0.2,'center_y':0.7}
-        on_press: root.frbtn()
-    MDFlatButton
-        id : debtn
-        text: 'Germany'
-        halign:'center'
-        pos_hint: {'center_x':0.5,'center_y':0.7}
-        on_press: root.debtn()
-    Label
-        id : showxlan
-        text:'xxxx'
-        halign:'center' 
-        pos_hint:{'center_x': 0.8, 'center_y': 0.95} 
+        on_press: root.manager.current = 'main'
 
+    Label
+        id : histext01
+        text:''
+        halign:'center'
+        font_name:"arial-unicode-ms.otf"
+        pos_hint:{'center_x': 0.5, 'center_y': 0.3}
+        text_size: root.width,None
+        size: self.texture_size
+    Label
+        id : histext02
+        text:''
+        halign:'center'
+        font_name:"arial-unicode-ms.otf"
+        pos_hint:{'center_x': 0.5, 'center_y': 0.3}
+        text_size: root.width,None
+        size: self.texture_size
 """
 
-class MainScreen(Screen):
 
-    def clear(self):
-        self.ids.youtext.text = ' '
-        self.ids.youtrantext.text = ' '
+class Screen01(Screen):
+    pass
+class Screen02(Screen):
+    global lan1
+    global lan2
+    global histext
+    histext = []
+    global histran
+    histran = []
+    lan1 = ""
+    lan2 = ""
+
+    def __init__(self, **kwargs):
+        super(Screen02, self).__init__(**kwargs)
 
     def rec(self):
-        if showlan == "":
+        if lan1 == "":
             self.ids.youtext.text = ("Please select language")
         else:
-            # GUI Blocking Audio Capture
             print("Please say something")
             r = sr.Recognizer()
             with sr.Microphone() as source:
@@ -248,146 +288,104 @@ class MainScreen(Screen):
                 audio = r.listen(source)
             try:
                 print("You have said")
-                # audio = r.listen(source)
                 global word
-                global y
-                word = r.recognize_google(audio, None, y)
-                print(showlan)
+                word = r.recognize_google(audio, None, lan1)
                 print(word)
-                # textlist.append(word)
-                # self.output=(word)
-                # self.youtext.text = self.word.text
+                histext.append(word)
                 self.ids.youtext.text = format(word)
-                # self.output=("Audio Recorded Successfully \n ")
+                if lan1 == "":
+                    self.ids.youtrantext.text = "No word to Translate"
+                elif lan2 == "":
+                    self.ids.youtrantext.text = "Please select language"
+                else:
+                    src = lan1
+                    dest = lan2
+                    translator = Translator()
+                    result = translator.translate(word, src=src, dest=dest)
+                    result = result.text
+                    histran.append(result)
+                    self.ids.youtrantext.text = result
             except sr.UnknownValueError:
-                self.ids.youtext.text= ("Please Try Again")
+                self.ids.youtext.text = ("Error")
             except sr.RequestError as e:
                 self.ids.youtext.text = ("Error".format(e))
-        pass
-
+            print(histext,histran)
     def translate(self):
-        global showxlan
-        global showlan
-        global word
-        if showlan == "":
+        if lan1 == "":
             self.ids.youtrantext.text = "No word to Translate"
-        elif showxlan == "":
+        elif lan2 == "":
             self.ids.youtrantext.text = "Please select language"
         else:
-            src = showlan
-            dest = showxlan
-            tword = word
+            src = lan1
+            dest = lan2
             translator = Translator()
-            result = translator.translate(tword, src=src, dest=dest)
+            result = translator.translate(word, src=src, dest=dest)
             result = result.text
             self.ids.youtrantext.text = result
+
+    def clear(self):
+        self.ids.youtext.text = ' '
+        self.ids.youtrantext.text = ' '
+
+    #### input language ####
+    def lan01(self):
+        global lan1
+        lan1 = "en"
+        self.ids.btnlanshow1.text = "English"
+    def lan02(self):
+        global lan1
+        lan1 = "th"
+        self.ids.btnlanshow1.text = "Thai"
+    def lan03(self):
+        global lan1
+        lan1 = "ru"
+        self.ids.btnlanshow1.text = "Russia"
+    def lan04(self):
+        global lan1
+        lan1 = "fr"
+        self.ids.btnlanshow1.text = "France"
+    def lan05(self):
+        global lan1
+        lan1 = "de"
+        self.ids.btnlanshow1.text = "Germany"
+
+    #### input translate ####
+    def lan10(self):
+        global lan2
+        lan2 = "en"
+        self.ids.btnlanshow2.text = "English"
+    def lan20(self):
+        global lan2
+        lan2 = "th"
+        self.ids.btnlanshow2.text = "Thai"
+    def lan30(self):
+        global lan2
+        lan2 = "ru"
+        self.ids.btnlanshow2.text = "Russia"
+    def lan40(self):
+        global lan2
+        lan2 = "fr"
+        self.ids.btnlanshow2.text = "France"
+    def lan50(self):
+        global lan2
+        lan2 = "de"
+        self.ids.btnlanshow2.text = "Germany"
+
     pass
-
-class ProfileScreen(Screen):
-    global showlan
-    showlan = ""
-
+class Screen03(Screen):
     def __init__(self, **kwargs):
-        super(ProfileScreen, self).__init__(**kwargs)
-
-    def linklan(self):
-        self.ids.showmlan.text = x
-
-    def thbtn(self):
-        global x
-        global y
-        global showlan
-        x = "Thai"
-        y = 'th'
-        showlan = y
-        self.ids.showlan.text = y
-
-    def enbtn(self):
-        global x
-        global y
-        global showlan
-        x = "English"
-        y = 'en'
-        showlan = y
-        self.ids.showlan.text = y
-
-    def rubtn(self):
-        global x
-        global y
-        global showlan
-        x = "Russia"
-        y = 'ru'
-        showlan = y
-        self.ids.showlan.text = y
-
-    def frbtn(self):
-        global x
-        global y
-        global showlan
-        x = "French"
-        y = 'fr'
-        showlan = y
-        self.ids.showlan.text = y
-
-    def debtn(self):
-        global x
-        global y
-        global showlan
-        x = "Germany"
-        y = 'de'
-        showlan = y
-        self.ids.showlan.text = y
+        super(Screen03, self).__init__(**kwargs)
+    def show_alert_dialog(self):
+        self.ids.histext01.text = str(histext)
+        self.ids.histext02.text = str(histran)
     pass
 
-class UploadScreen(Screen):
-    global showxlan
-    showxlan = ""
-    def thbtn(self):
-        global xx
-        global yy
-        global  showxlan
-        xx = "Thai"
-        yy = 'th'
-        showxlan = yy
-        self.ids.showxlan.text = yy
-    def enbtn(self):
-        global xx
-        global yy
-        global showxlan
-        xx = "English"
-        yy = 'en'
-        showxlan = yy
-        self.ids.showxlan.text = yy
-    def rubtn(self):
-        global xx
-        global yy
-        global showxlan
-        xx = "Russia"
-        yy = 'ru'
-        showxlan = yy
-        self.ids.showxlan.text = yy
-    def frbtn(self):
-        global xx
-        global yy
-        global showlan
-        x = "French"
-        y = 'fr'
-        showlan = yy
-        self.ids.showlan.text = yy
-    def debtn(self):
-        global xx
-        global yy
-        global showlan
-        x = "Germany"
-        y = 'de'
-        showlan = yy
-        self.ids.showlan.text = yy
-    pass
 
 sm = ScreenManager()
-sm.add_widget(MainScreen(name='main'))
-sm.add_widget(ProfileScreen(name='profile'))
-sm.add_widget(UploadScreen(name='upload'))
+sm.add_widget(Screen01(name='main'))
+sm.add_widget(Screen02(name='rec'))
+sm.add_widget(Screen03(name='history'))
+
 
 class MainApp(MDApp):
     def build(self):
@@ -395,6 +393,7 @@ class MainApp(MDApp):
         self.theme_cls.theme_style = "Dark"
         screen = Builder.load_string(screen_helper)
         return screen
+
 
 if __name__ == '__main__':
     MainApp().run()
