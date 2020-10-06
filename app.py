@@ -30,6 +30,7 @@ from kivymd.uix.list import OneLineAvatarIconListItem
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.snackbar import Snackbar
+from kivymd.uix.list import OneLineListItem
 from kivy.metrics import dp
 from kivymd.uix.datatables import MDDataTable
 
@@ -156,7 +157,7 @@ ScreenManager:
         pos_hint: {'center_x':0.15,'center_y':0.9}
         on_press: root.manager.current = 'main'   
         
-<TeItemConfirm>
+<ItemConfirm>
     on_release: root.set_icon(check)
     CheckboxLeftWidget:
         id: check
@@ -198,7 +199,7 @@ ScreenManager:
         text:''
         halign:'center'
         font_name:"arial-unicode-ms.otf"
-        pos_hint:{'center_x': 0.3, 'center_y': 0.5}
+        pos_hint:{'center_x': 0.3, 'center_y': 0.8}
         text_size: root.width,None
         size: self.texture_size
     Label
@@ -206,10 +207,10 @@ ScreenManager:
         text:''
         halign:'center'
         font_name:"arial-unicode-ms.otf"
-        pos_hint:{'center_x': 0.7, 'center_y': 0.5}
+        pos_hint:{'center_x': 0.7, 'center_y': 0.8}
         text_size: root.width,None
         size: self.texture_size
-        
+
 """
 
 
@@ -218,19 +219,24 @@ class Screen01(Screen):
 class Screen02(Screen):
     sm = ScreenManager()
     dialog = None
+    global his_all
+    his_all={}
+    global num
+    num = 0
     global lan1
     global lan2
-    global histext
-    histext = []
-    global histran
-    histran = []
     lan1 = ""
     lan2 = ""
+    global his_text
+    his_text = {}
+    global his_tran
+    his_tran = {}
 
     def __init__(self, **kwargs):
         super(Screen02, self).__init__(**kwargs)
 
     def rec(self):
+        global num
         if lan1 == "":
             self.ids.youtext.text = ("Please select language")
         else:
@@ -245,7 +251,6 @@ class Screen02(Screen):
                 global word
                 word = r.recognize_google(audio, None, lan1)
                 print(word)
-                histext.append(word)
                 self.ids.youtext.text = format(word)
                 if lan1 == "":
                     self.ids.youtrantext.text = "No word to Translate"
@@ -257,13 +262,20 @@ class Screen02(Screen):
                     translator = Translator()
                     result = translator.translate(word, src=src, dest=dest)
                     result = result.text
-                    histran.append(result)
                     self.ids.youtrantext.text = result
+                    num = num + 1
+                    print(num)
+                    his_all[str(word)] = str(result)
+                    his_text[num] = str(word)
+                    his_tran[num] = str(result)
             except sr.UnknownValueError:
                 self.ids.youtext.text = ("Error")
             except sr.RequestError as e:
                 self.ids.youtext.text = ("Error".format(e))
-            print(histext,histran)
+
+            print(his_all)
+            print(his_text)
+            print(his_tran)
     def translate(self):
         if lan1 == "":
             self.ids.youtrantext.text = "No word to Translate"
@@ -277,8 +289,6 @@ class Screen02(Screen):
             result = result.text
             self.ids.youtrantext.text = result
 
-            histran.append(result)
-            print(histext,histran[-1])
     def clear(self):
         self.ids.youtext.text = ' '
         self.ids.youtrantext.text = ' '
@@ -328,18 +338,18 @@ class Screen02(Screen):
                 title="Select Language",
                 type="confirmation",
                 items=[
-                    TeItemConfirm(text="English",on_press=self.lan01),
-                    TeItemConfirm(text="Thai",on_press=self.lan02),
-                    TeItemConfirm(text="Russia",on_press=self.lan03),
-                    TeItemConfirm(text="France",on_press=self.lan04),
-                    TeItemConfirm(text="Germany",on_press=self.lan05),
-                    TeItemConfirm(text="Japan", on_press=self.lan06),
-                    TeItemConfirm(text="South-Korea", on_press=self.lan08),
-                    TeItemConfirm(text="Spain", on_press=self.lan09),
-                    TeItemConfirm(text="Lao", on_press=self.lan07),
-                    TeItemConfirm(text="test", ),
-                    TeItemConfirm(text="test", ),
-                    TeItemConfirm(text="test", ),
+                    ItemConfirm(text="English",on_press=self.lan01),
+                    ItemConfirm(text="Thai",on_press=self.lan02),
+                    ItemConfirm(text="Russia",on_press=self.lan03),
+                    ItemConfirm(text="France",on_press=self.lan04),
+                    ItemConfirm(text="Germany",on_press=self.lan05),
+                    ItemConfirm(text="Japan", on_press=self.lan06),
+                    ItemConfirm(text="South-Korea", on_press=self.lan08),
+                    ItemConfirm(text="Spain", on_press=self.lan09),
+                    ItemConfirm(text="Lao", on_press=self.lan07),
+                    ItemConfirm(text="test", ),
+                    ItemConfirm(text="test", ),
+                    ItemConfirm(text="test", ),
                 ],
                 buttons=[
                     MDFlatButton(text="Back", on_release= self.closeDialog),
@@ -395,13 +405,13 @@ class Screen02(Screen):
                     TrItemConfirm(text="Russia",on_press=self.lan30),
                     TrItemConfirm(text="France",on_press=self.lan40),
                     TrItemConfirm(text="Germany",on_press=self.lan50),
-                    TeItemConfirm(text="Japan", on_press=self.lan60),
-                    TeItemConfirm(text="South-Korea", on_press=self.lan80),
-                    TeItemConfirm(text="Spain", on_press=self.lan90),
-                    TeItemConfirm(text="Lao", on_press=self.lan70),
-                    TeItemConfirm(text="test", ),
-                    TeItemConfirm(text="test", ),
-                    TeItemConfirm(text="test", ),
+                    TrItemConfirm(text="Japan", on_press=self.lan60),
+                    TrItemConfirm(text="South-Korea", on_press=self.lan80),
+                    TrItemConfirm(text="Spain", on_press=self.lan90),
+                    TrItemConfirm(text="Lao", on_press=self.lan70),
+                    TrItemConfirm(text="test", ),
+                    TrItemConfirm(text="test", ),
+                    TrItemConfirm(text="test", ),
                 ],
                 buttons=[
                     MDFlatButton(text="Back", on_release= self.closeDialog),
@@ -410,7 +420,7 @@ class Screen02(Screen):
             self.dialog.open()
 
     pass
-class TeItemConfirm(OneLineAvatarIconListItem):
+class ItemConfirm(OneLineAvatarIconListItem):
     divider = None
     global check_list
     def set_icon(self, instance_check):
@@ -431,29 +441,14 @@ class TrItemConfirm(OneLineAvatarIconListItem):
 
 class Screen03(Screen):
     dialog = None
-    global histext
-    global histran
-
     def __init__(self, **kwargs):
         super(Screen03, self).__init__(**kwargs)
 
     def show_his(self):
-        self.ids.histext01 = str(histext)
-        self.ids.histext02 = str(histran)
-        self.data_tables = MDDataTable(
-            size_hint=(0.95, 0.8),
-            column_data=[
-                (" Word ", dp(35)),
-                (" Translate ", dp(20)),
-            ],
-            row_data=[
-                # The number of elements must match the length
-                # of the `column_data` list.
-                (self.ids.histext01.text ,self.ids.histext02.text)
-            ],
-
-        )
-        self.data_tables.open()
+        global his_text
+        global his_tran
+        global his_all
+        
     pass
 
 sm = ScreenManager()
