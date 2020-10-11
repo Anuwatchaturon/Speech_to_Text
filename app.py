@@ -1,52 +1,20 @@
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.dropdown import DropDown
-from kivy.uix.button import Button
-from kivy.uix.textinput import TextInput
-from kivymd.uix.button import MDRectangleFlatButton
-from kivymd.uix.button import MDRoundFlatButton
-from kivymd.uix.label import MDLabel
-from kivymd.uix.textfield import MDTextField
-from kivymd.uix.button import MDIconButton
-from kivymd.uix.button import MDFloatingActionButton
-from kivy.core.window import Window
 import speech_recognition as sr
-from kivy.uix.dropdown import DropDown
-from kivy.uix.label import Label
-from kivymd.uix.list import OneLineAvatarListItem
-from kivymd.uix.menu import MDDropdownMenu, RightContent
-from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import RectangularElevationBehavior
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivy.properties import StringProperty
-from kivymd.uix.menu import MDDropdownMenu
-from googletrans import Translator
-from kivymd.uix.button import MDFlatButton
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.list import OneLineAvatarListItem
 from kivymd.uix.list import OneLineAvatarIconListItem
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.snackbar import Snackbar
-from kivymd.uix.list import OneLineListItem
-from kivy.metrics import dp
-from kivymd.uix.datatables import MDDataTable
-
-
-# -*- coding: utf-8 -*-
 from googletrans import Translator
 from kivy.config import Config
 Config.set('graphics', 'width', '330')
 Config.set('graphics', 'height', '560')
-
-
 screen_helper = """
 ScreenManager:
     Screen01:
     Screen02:
     Screen03:
-
 <Screen01>:
     name: 'main'
     FloatLayout:
@@ -70,8 +38,6 @@ ScreenManager:
         text_color: 0, 1, 1, 1
         pos_hint: {'center_x':0.7,'center_y':0.47}
         on_press: root.manager.current = 'history'   
-        
-        
 <Screen02>:
     name: 'rec'
     FloatLayout:
@@ -99,8 +65,6 @@ ScreenManager:
         pos_hint:{'center_x': 0.5, 'center_y': 0.3}
         text_size: root.width,None
         size: self.texture_size
- 
-    
     MDIconButton:
         icon: "microphone"
         user_font_size: "45sp"
@@ -133,7 +97,6 @@ ScreenManager:
         halign:'center'
         pos_hint:{'center_x': 0.25, 'center_y': 0.5}
         font_style:'Subtitle2'
-
 ####################################################################
     MDFlatButton:
         id: Buttontexttran
@@ -148,28 +111,22 @@ ScreenManager:
         halign:'center'
         pos_hint: {"center_x": .75, "center_y": .5}
         font_style:'Subtitle2'
-        
     MDIconButton
         icon: "chevron-double-left"
         theme_text_color:"Custom"
         text_color:(255 / 255, 255 / 255, 255 / 255)
         pos_hint: {'center_x':0.15,'center_y':0.9}
-        on_press: root.manager.current = 'main'   
-        
+        on_press: root.manager.current = 'main'        
 <ItemConfirm>
     on_release: root.set_icon(check)
     CheckboxLeftWidget:
         id: check
-        group: "check"
-        
+        group: "check"   
 <TrItemConfirm>
     on_release: root.set_icon(check)
     CheckboxLeftWidget:
         id: check
-        group: "check"
-        
-
-        
+        group: "check"   
 <Screen03>:
     name: 'history'
     FloatLayout:
@@ -180,22 +137,19 @@ ScreenManager:
                 size: self.size
                 pos: self.pos
     BoxLayout:
-        orientation: 'vertical'
-        
+        orientation: 'vertical'       
     MDIconButton
         icon: "chevron-double-left"
         theme_text_color:"Custom"
         text_color:(255 / 255, 255 / 255, 255 / 255)
         pos_hint: {'center_x':0.15,'center_y':0.9}
-        on_press: root.manager.current = 'main'
-        
+        on_press: root.manager.current = 'main'   
     MDRectangleFlatButton
         text: "Show"
         theme_text_color:"Custom"
         text_color:(255 / 255, 255 / 255, 255 / 255)
         pos_hint: {'center_x':0.5,'center_y':0.1}
-        on_release : root.on_start()
-        
+        on_release : root.on_start()      
     Label
         id : histext01
         text:''
@@ -204,11 +158,7 @@ ScreenManager:
         pos_hint:{'center_x': 0.5, 'center_y': 0.53}
         text_size: root.width,None
         size: self.texture_size
-
-
 """
-
-
 class Screen01(Screen):
     pass
 class Screen02(Screen):
@@ -222,10 +172,8 @@ class Screen02(Screen):
     global lan2
     lan1 = ""
     lan2 = ""
-
     def __init__(self, **kwargs):
         super(Screen02, self).__init__(**kwargs)
-
     def rec(self):
         global num
         if lan1 == "":
@@ -302,17 +250,11 @@ class Screen02(Screen):
                         print(num)
                         his_all.append(word)
                         his_all.append(result)
-                        #his_all[str(word)] = str(result)
-                        #his_text[num] = str(word)
-                        #his_tran[num] = str(result)
-
             except sr.UnknownValueError:
                 self.ids.youtext.text = ("Error")
             except sr.RequestError as e:
                 self.ids.youtext.text = ("Error".format(e))
-
             print(his_all)
-
     def translate(self):
         if lan1 == "":
             self.ids.youtrantext.text = "No word to Translate"
@@ -325,7 +267,6 @@ class Screen02(Screen):
             result = translator.translate(word, src=src, dest=dest)
             result = result.text
             self.ids.youtrantext.text = result
-
     def clear(self):
         self.ids.youtext.text = ' '
         self.ids.youtrantext.text = ' '
@@ -403,14 +344,12 @@ class Screen02(Screen):
                     ItemConfirm(text="Lao", on_press=self.lan07),
                     TrItemConfirm(text="Vietnam", on_press=self.lan010),
                     TrItemConfirm(text="China", on_press=self.lan013),
-
                 ],
                 buttons=[
                     MDFlatButton(text="Back", on_release= self.closeDialog),
                 ],
             )
             self.dialog.open()
-
     #### input translate ####
     def lan10(self,*a2):
         global lan2
@@ -489,7 +428,6 @@ class Screen02(Screen):
                 ],
             )
             self.dialog.open()
-
     pass
 class ItemConfirm(OneLineAvatarIconListItem):
     divider = None
@@ -599,7 +537,6 @@ class Screen03(Screen):
             ty = ("You word" + "\n" + (his_all[18]) + "\n" + "-----------------------------------------------------"
                   + "\n" + "You Translate" + "\n" + (his_all[19]))
             self.ids.histext01.text = (ty)
-
     def on_start(self):
         self.dialog = MDDialog(
             size_hint=(0.9, 1),
@@ -623,23 +560,16 @@ class Screen03(Screen):
             ],
         )
         self.dialog.open()
-
-
     pass
-
 sm = ScreenManager()
 sm.add_widget(Screen01(name='main'))
 sm.add_widget(Screen02(name='rec'))
 sm.add_widget(Screen03(name='history'))
-
-
 class Speech_to_TextApp(MDApp):
     def build(self):
         self.theme_cls.primary_palette = "Amber"
         self.theme_cls.theme_style = "Dark"
         screen = Builder.load_string(screen_helper)
         return screen
-
-
 if __name__ == '__main__':
     Speech_to_TextApp().run()
